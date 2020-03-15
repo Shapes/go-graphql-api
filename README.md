@@ -1,4 +1,4 @@
-# GraphQL API built in Go
+# Shape GraphQL API built in Go
 Basic can be found here [tutorial on Medium](https://medium.com/@bradford_hamilton/building-an-api-with-graphql-and-go-9350df5c9356) I published.
 
 ## 1. Install psql and realize
