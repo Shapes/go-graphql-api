@@ -26,11 +26,21 @@ func NewRoot(db *postgres.Db) *Root {
 						// Slice of User type which can be found in types.go
 						Type: graphql.NewList(User),
 						Args: graphql.FieldConfigArgument{
-							"name": &graphql.ArgumentConfig{
+							"firstName": &graphql.ArgumentConfig{
 								Type: graphql.String,
 							},
 						},
 						Resolve: resolver.UserResolver,
+					},
+					"jobs": &graphql.Field{
+						// Slice of Job type which can be found in types.go
+						Type: graphql.NewList(Job),
+						Args: graphql.FieldConfigArgument{
+							"title": &graphql.ArgumentConfig{
+								Type: graphql.String,
+							},
+						},
+						Resolve: resolver.JobResolver,
 					},
 				},
 			},

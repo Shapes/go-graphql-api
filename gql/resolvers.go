@@ -13,10 +13,22 @@ type Resolver struct {
 // UserResolver resolves our user query through a db call to GetUserByName
 func (r *Resolver) UserResolver(p graphql.ResolveParams) (interface{}, error) {
 	// Strip the name from arguments and assert that it's a string
-	name, ok := p.Args["name"].(string)
+	name, ok := p.Args["firstName"].(string)
 	if ok {
 		users := r.db.GetUsersByName(name)
 		return users, nil
+	}
+
+	return nil, nil
+}
+
+// JobResolver resolves our user query through a db call to GetUserByName
+func (r *Resolver) JobResolver(p graphql.ResolveParams) (interface{}, error) {
+	// Strip the name from arguments and assert that it's a string
+	title, ok := p.Args["title"].(string)
+	if ok {
+		jobs := r.db.GetJobsByTitle(title)
+		return jobs, nil
 	}
 
 	return nil, nil

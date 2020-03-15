@@ -41,21 +41,23 @@ func ConnString(host string, port int, user string, dbName string, pass string) 
 
 // User shape
 type User struct {
-	id        int
-	firstName string
-	lastName  string
+	ID        int
+	FirstName string
+	LastName  string
 }
 
 // GetUsersByName is called within our user query for graphql
-func (d *Db) GetUsersByName(name string) []User {
+func (d *Db) GetUsersByName(firstName string) []User {
+
 	// Prepare query, takes a name argument, protects from sql injection
-	stmt, err := d.Prepare("SELECT * FROM Users WHERE firstName=$1")
+	stmt, err := d.Prepare(`SELECT "id", "firstName", "lastName" FROM "Users" WHERE "firstName"=$1`)
+
 	if err != nil {
 		fmt.Println("GetUserByName Preperation Err: ", err)
 	}
 
 	// Make query with our stmt, passing in name argument
-	rows, err := stmt.Query(name)
+	rows, err := stmt.Query(firstName)
 	if err != nil {
 		fmt.Println("GetUserByName Query Err: ", err)
 	}
@@ -67,9 +69,9 @@ func (d *Db) GetUsersByName(name string) []User {
 	// Copy the columns from row into the values pointed at by r (User)
 	for rows.Next() {
 		err = rows.Scan(
-			&r.id,
-			&r.firstName,
-			&r.lastName,
+			&r.ID,
+			&r.FirstName,
+			&r.LastName,
 		)
 		if err != nil {
 			fmt.Println("Error scanning rows: ", err)
@@ -78,4 +80,45 @@ func (d *Db) GetUsersByName(name string) []User {
 	}
 
 	return users
+}
+
+// Job shape
+type Job struct {
+	ID    int
+	Title string
+}
+
+// GetJobsByTitle is called within our user query for graphql
+func (d *Db) GetJobsByTitle(title string) []Job {
+
+	// Prepare query, takes a name argument, protects from sql injection
+	stmt, err := d.Prepare(`SELECT "id", "title" FROM "Jobs" WHERE "title"=$1`)
+
+	if err != nil {
+		fmt.Println("GetJobsByTitle Preperation Err: ", err)
+	}
+
+	// Make query with our stmt, passing in name argument
+	rows, err := stmt.Query(title)
+	if err != nil {
+		fmt.Println("GetJobsByTitle Query Err: ", err)
+	}
+
+	// Create User struct for holding each row's data
+	var r Job
+	// Create slice of Users for our response
+	jobs := []Job{}
+	// Copy the columns from row into the values pointed at by r (User)
+	for rows.Next() {
+		err = rows.Scan(
+			&r.ID,
+			&r.Title,
+		)
+		if err != nil {
+			fmt.Println("Error scanning rows: ", err)
+		}
+		jobs = append(jobs, r)
+	}
+
+	return jobs
 }
