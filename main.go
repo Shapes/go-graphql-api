@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/bradford-hamilton/go-graphql-api/gql"
-	"github.com/bradford-hamilton/go-graphql-api/postgres"
-	"github.com/bradford-hamilton/go-graphql-api/server"
+	"../go-graphql-api/gql"
+	"../go-graphql-api/postgres"
+	"../go-graphql-api/server"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
@@ -30,7 +30,7 @@ func initializeAPI() (*chi.Mux, *postgres.Db) {
 
 	// Create a new connection to our pg database
 	db, err := postgres.New(
-		postgres.ConnString("localhost", 5432, "bradford", "go_graphql_db"),
+		postgres.ConnString("ec2-174-129-241-14.compute-1.amazonaws.com", 5432, "tsiacswelwmemh", "ddjm7blrnni651", "59f492b1b695c0f0cc84813150b9aeac57968fead8426c8b301c68004749e87e"),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -55,10 +55,10 @@ func initializeAPI() (*chi.Mux, *postgres.Db) {
 	// Add some middleware to our router
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON), // set content-type headers as application/json
-		middleware.Logger,          // log api request calls
-		middleware.DefaultCompress, // compress results, mostly gzipping assets and json
-		middleware.StripSlashes,    // match paths with a trailing slash, strip it, and continue routing through the mux
-		middleware.Recoverer,       // recover from panics without crashing server
+		middleware.Logger, // log api request calls
+		//middleware.DefaultCompress, // compress results, mostly gzipping assets and json
+		middleware.StripSlashes, // match paths with a trailing slash, strip it, and continue routing through the mux
+		middleware.Recoverer,    // recover from panics without crashing server
 	)
 
 	// Create the graphql route with a Server method to handle it

@@ -10,17 +10,11 @@ var User = graphql.NewObject(
 			"id": &graphql.Field{
 				Type: graphql.Int,
 			},
-			"name": &graphql.Field{
+			"firstName": &graphql.Field{
 				Type: graphql.String,
 			},
-			"age": &graphql.Field{
+			"lastName": &graphql.Field{
 				Type: graphql.Int,
-			},
-			"profession": &graphql.Field{
-				Type: graphql.String,
-			},
-			"friendly": &graphql.Field{
-				Type: graphql.Boolean,
 			},
 		},
 	},
